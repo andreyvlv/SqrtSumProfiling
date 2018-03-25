@@ -14,9 +14,14 @@ namespace SqrtSumProfiling.ProfilingTask
             var results = new List<decimal>();
             Parallel.For(0, threads, i =>
             {
-                results.Add(i < threads - 1 ?
+                var rangeSum = i < threads - 1 ?
                     GetSqrtSum(i * step, i * step + step) :
-                    GetSqrtSum(i * step, number));
+                    GetSqrtSum(i * step, number);
+
+                lock(results)
+                {
+                    results.Add(rangeSum);
+                }
             });
             return results.Sum();
         }
@@ -31,10 +36,10 @@ namespace SqrtSumProfiling.ProfilingTask
             return result;
         }
 
-        public static List<int> GetTestSet(int upperBound, int step)
+        public static List<int> GetTestSet(int lowerBound, int upperBound, int step)
         {
             var set = new List<int>();
-            for (int i = 0; i <= upperBound; i += step)
+            for (int i = lowerBound; i <= upperBound; i += step)
             {
                 set.Add(i);
             }

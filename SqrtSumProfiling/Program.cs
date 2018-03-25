@@ -15,13 +15,14 @@ namespace AnagramsFinderProfiling
         [STAThread]
         static void Main(string[] args)
         {
-            var testSet = SqrtSum.GetTestSet(50000, 250);
+            var testSet = SqrtSum.GetTestSet(0, 500000, 10000);
 
             Console.WriteLine("Calculate...");
 
-            var oneThreadProfile = new Profiler().Measures(testSet, 1, 30, Color.Red, "one thread", SqrtSum.AutomaticSqrtSum);
-            var twoThreadProfile = new Profiler().Measures(testSet, 2, 30, Color.Blue, "two thread", SqrtSum.AutomaticSqrtSum);
-            var fourThreadProfile = new Profiler().Measures(testSet, 4, 30, Color.Green, "four thread", SqrtSum.AutomaticSqrtSum);
+            var oneThreadProfile = new Profiler().Measures(testSet, 1, 10, Color.Red, "one thread", SqrtSum.AutomaticSqrtSum);
+            var twoThreadProfile = new Profiler().Measures(testSet, 2, 10, Color.Blue, "two thread", SqrtSum.AutomaticSqrtSum);
+            var fourThreadProfile = new Profiler().Measures(testSet, 4, 10, Color.Green, "four thread", SqrtSum.AutomaticSqrtSum);
+            //var eightThreadProfile = new Profiler().Measures(testSet, 8, 10, Color.BlueViolet, "eight thread", SqrtSum.AutomaticSqrtSum);
 
             Console.WriteLine("Calculating Complete!");
 

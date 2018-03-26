@@ -26,6 +26,30 @@ namespace SqrtSumProfiling.ProfilingTask
             return results.Sum();
         }
 
+        // Другой параллельный метод
+        public static decimal AutomaticSqrtSum2(int number, int threads)
+        {
+            int step = number / threads;
+            var results = new List<decimal>();
+            var threadsArr = new Task[threads];
+            foreach (var num in ParallelEnumerable.Range(0, threads))
+            {
+                threadsArr[num] = Task.Run(() =>
+                {
+                    var rangeSum = num < threadsArr.Length - 1 ?
+                    GetSqrtSum(num * step, num * step + step) :
+                    GetSqrtSum(num * step, number);
+
+                    lock (results)
+                    {
+                        results.Add(rangeSum);
+                    }
+                });
+            }
+            Task.WaitAll(threadsArr);
+            return results.Sum();
+        }
+
         static decimal GetSqrtSum(int start, int end)
         {
             decimal result = 0;
